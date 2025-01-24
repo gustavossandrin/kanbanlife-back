@@ -1,11 +1,6 @@
-import Repository from '../contracts/repository';
-import User from '../entities/user';
+import { Repository } from './base/repository';
+import { User } from '../entities/user.entity';
 
-export default abstract class UserRepository implements Repository<User> {
-  abstract save(entity: User): Promise<User>;
-  abstract update(entity: User): Promise<User>;
-  abstract delete(id: string): Promise<void>;
-  abstract getById(id: string): Promise<User | null>;
-  abstract getAll(): Promise<User[]>;
-  abstract findByEmail(email: string): Promise<User | null>;
+export interface IUserRepository extends Repository<User> {
+  findByEmail(email: string): Promise<User | null>;
 }
