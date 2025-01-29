@@ -49,3 +49,11 @@
 #importante
 - O projeto usa PostgreSQL na porta 5432
 - Credenciais do banco: usuário=postgres, senha=postgres, database=kanbanlife
+
+# Logs de Alterações
+
+- Corrigido nome do módulo de health de LabelModule para HealthModule
+- Importado HealthModule no AppModule para habilitar o endpoint /health
+
+# Importante
+- O endpoint /health retorna 'OK' quando a aplicação está funcionando corretamente
