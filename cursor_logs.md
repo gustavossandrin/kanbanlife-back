@@ -32,3 +32,20 @@
 - Necessário atualizar as referências nos controllers de cada módulo
 - Controllers atualizados para usar os novos inputs
 - Inputs agora possuem mensagens de validação em português
+
+[24/01/2024] Tentativa de rodar o projeto falhou devido a DTOs faltantes (create/update para task e user) e problema na importação do UserRepository
+#importante Necessário criar os DTOs faltantes e verificar a estrutura de importação do UserRepository antes de conseguir rodar o projeto
+
+[29/01/2024] - Instalado Vercel CLI globalmente usando sudo npm install -g vercel após resolver problemas de permissão
+[29/01/2024] - Corrigido importações de DTOs em todos os services (column, label, task, user) para usar os novos inputs da pasta shared/inputs
+[29/01/2024] - Removido métodos findAll não existentes nas interfaces dos repositories
+
+# Logs do Projeto
+
+## Configuração Inicial
+- Projeto requer PostgreSQL rodando via Docker e Node.js/Yarn para execução
+- Stack: NestJS, Prisma, PostgreSQL
+
+#importante
+- O projeto usa PostgreSQL na porta 5432
+- Credenciais do banco: usuário=postgres, senha=postgres, database=kanbanlife

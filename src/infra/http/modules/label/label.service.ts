@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ILabelRepository } from '../../../../domain/repositories/label-repository';
-import { CreateLabelDto } from './dto/create-label.dto';
-import { UpdateLabelDto } from './dto/update-label.dto';
 import { Label } from '../../../../domain/entities/label.entity';
+import { CreateLabelInput } from '../../shared/inputs/label/create-label.input';
+import { UpdateLabelInput } from '../../shared/inputs/label/update-label.input';
 
 @Injectable()
 export class LabelService {
@@ -11,9 +11,9 @@ export class LabelService {
     private readonly labelRepository: ILabelRepository,
   ) {}
 
-  async create(createLabelDto: CreateLabelDto): Promise<Label> {
+  async create(createLabelInput: CreateLabelInput): Promise<Label> {
     const label = new Label();
-    Object.assign(label, createLabelDto);
+    Object.assign(label, createLabelInput);
     return this.labelRepository.create(label);
   }
 
@@ -29,8 +29,8 @@ export class LabelService {
     return label;
   }
 
-  async update(id: string, updateLabelDto: UpdateLabelDto): Promise<Label> {
-    return this.labelRepository.update(id, updateLabelDto);
+  async update(id: string, updateLabelInput: UpdateLabelInput): Promise<Label> {
+    return this.labelRepository.update(id, updateLabelInput);
   }
 
   async remove(id: string): Promise<void> {

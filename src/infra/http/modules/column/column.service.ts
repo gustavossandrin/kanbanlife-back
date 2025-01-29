@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IColumnRepository } from '../../../../domain/repositories/column-repository';
-import { CreateColumnDto } from './dto/create-column.dto';
-import { UpdateColumnDto } from './dto/update-column.dto';
 import { Column } from '../../../../domain/entities/column.entity';
+import { CreateColumnInput } from '../../shared/inputs/column/create-column.input';
+import { UpdateColumnInput } from '../../shared/inputs/column/update-column.input';
 
 @Injectable()
 export class ColumnService {
@@ -11,9 +11,9 @@ export class ColumnService {
     private readonly columnRepository: IColumnRepository,
   ) {}
 
-  async create(createColumnDto: CreateColumnDto): Promise<Column> {
+  async create(createColumnInput: CreateColumnInput): Promise<Column> {
     const column = new Column();
-    Object.assign(column, createColumnDto);
+    Object.assign(column, createColumnInput);
     return this.columnRepository.create(column);
   }
 
@@ -29,8 +29,8 @@ export class ColumnService {
     return column;
   }
 
-  async update(id: string, updateColumnDto: UpdateColumnDto): Promise<Column> {
-    return this.columnRepository.update(id, updateColumnDto);
+  async update(id: string, updateColumnInput: UpdateColumnInput): Promise<Column> {
+    return this.columnRepository.update(id, updateColumnInput);
   }
 
   async updatePosition(id: string, position: number): Promise<void> {

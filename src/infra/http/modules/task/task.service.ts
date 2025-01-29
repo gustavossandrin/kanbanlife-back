@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ITaskRepository } from '../../../../domain/repositories/task-repository';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from '../../../../domain/entities/task.entity';
+import { CreateTaskInput } from '../../shared/inputs/task/create-task.input';
+import { UpdateTaskInput } from '../../shared/inputs/task/update-task.input';
 
 @Injectable()
 export class TaskService {
@@ -11,9 +11,9 @@ export class TaskService {
     private readonly taskRepository: ITaskRepository,
   ) {}
 
-  async create(createTaskDto: CreateTaskDto): Promise<Task> {
+  async create(createTaskInput: CreateTaskInput): Promise<Task> {
     const task = new Task();
-    Object.assign(task, createTaskDto);
+    Object.assign(task, createTaskInput);
     return this.taskRepository.create(task);
   }
 
@@ -29,8 +29,8 @@ export class TaskService {
     return task;
   }
 
-  async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    return this.taskRepository.update(id, updateTaskDto);
+  async update(id: string, updateTaskInput: UpdateTaskInput): Promise<Task> {
+    return this.taskRepository.update(id, updateTaskInput);
   }
 
   async updatePosition(id: string, position: number): Promise<void> {

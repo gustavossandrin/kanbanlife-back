@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IUserRepository } from '../../../../domain/repositories/user-repository';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../../../../domain/entities/user.entity';
+import { CreateUserInput } from '../../shared/inputs/user/create-user.input';
+import { UpdateUserInput } from '../../shared/inputs/user/update-user.input';
 
 @Injectable()
 export class UserService {
@@ -11,9 +11,9 @@ export class UserService {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserInput: CreateUserInput): Promise<User> {
     const user = new User();
-    Object.assign(user, createUserDto);
+    Object.assign(user, createUserInput);
     return this.userRepository.create(user);
   }
 
@@ -25,8 +25,8 @@ export class UserService {
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    return this.userRepository.update(id, updateUserDto);
+  async update(id: string, updateUserInput: UpdateUserInput): Promise<User> {
+    return this.userRepository.update(id, updateUserInput);
   }
 
   async remove(id: string): Promise<void> {

@@ -1,7 +1,8 @@
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, MinLength } from 'class-validator';
 
 export class CreateUserInput {
-  @IsEmail({}, { message: 'O email deve ser um endereço de email válido' })
+  @IsEmail({}, { message: 'Email inválido' })
+  @IsNotEmpty({ message: 'O email não pode estar vazio' })
   email: string;
 
   @IsString({ message: 'A senha deve ser uma string' })
@@ -9,13 +10,14 @@ export class CreateUserInput {
   password: string;
 
   @IsString({ message: 'O nome deve ser uma string' })
-  @MinLength(2, { message: 'O nome deve ter no mínimo 2 caracteres' })
+  @Length(2, 100, { message: 'O nome deve ter entre 2 e 100 caracteres' })
   firstName: string;
 
   @IsString({ message: 'O sobrenome deve ser uma string' })
-  @MinLength(2, { message: 'O sobrenome deve ter no mínimo 2 caracteres' })
+  @Length(2, 100, { message: 'O sobrenome deve ter entre 2 e 100 caracteres' })
   lastName: string;
 
   @IsString({ message: 'A foto deve ser uma string' })
+  @IsOptional()
   photo?: string;
 } 
