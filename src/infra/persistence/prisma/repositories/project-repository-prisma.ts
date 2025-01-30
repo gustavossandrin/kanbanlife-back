@@ -1,42 +1,61 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { IProjectRepository } from '../../../../domain/repositories/project-repository';
+import ProjectRepository from '../../../../domain/repositories/project-repository';
 import { Project } from '../../../../domain/entities/project.entity';
 
 @Injectable()
-export class ProjectRepositoryPrisma implements IProjectRepository {
+export class ProjectRepositoryPrisma implements ProjectRepository {
   constructor(private prisma: PrismaService) {}
 
+  private mapToEntity(data: any): Project {
+    return new Project(
+      data.name,
+      data.userId,
+      data.id,
+      data.createdAt,
+      data.updatedAt
+    );
+  }
+
   async findByUserId(userId: string): Promise<Project[]> {
-    return this.prisma.project.findMany({ where: { userId } });
+    const projects = await this.prisma.project.findMany({ where: { userId } });
+    return projects.map(project => this.mapToEntity(project));
   }
 
-  async findById(id: string): Promise<Project | null> {
-    return this.prisma.project.findUnique({ where: { id } });
+  async getById(id: string): Promise<Project | null> {
+    const project = await this.prisma.project.findUnique({ where: { id } });
+    return project ? this.mapToEntity(project) : null;
   }
 
-  async create(data: Project): Promise<Project> {
-    const { columns, user, userId, ...projectData } = data;
-    return this.prisma.project.create({
+  async save(entity: Project): Promise<Project> {
+    const { columns, user, ...data } = entity as any;
+    const project = await this.prisma.project.create({
       data: {
-        ...projectData,
-        user: { connect: { id: userId } }
+        ...data,
+        user: { connect: { id: data.userId } }
       }
     });
+    return this.mapToEntity(project);
   }
 
-  async update(id: string, data: Partial<Project>): Promise<Project> {
-    const { columns, user, userId, ...projectData } = data;
-    return this.prisma.project.update({
-      where: { id },
+  async update(entity: Project): Promise<Project> {
+    const { columns, user, ...data } = entity as any;
+    const project = await this.prisma.project.update({
+      where: { id: entity.id },
       data: {
-        ...projectData,
-        ...(userId && { user: { connect: { id: userId } } })
+        ...data,
+        user: { connect: { id: data.userId } }
       }
     });
+    return this.mapToEntity(project);
   }
 
   async delete(id: string): Promise<void> {
     await this.prisma.project.delete({ where: { id } });
+  }
+
+  async getAll(): Promise<Project[]> {
+    const projects = await this.prisma.project.findMany();
+    return projects.map(project => this.mapToEntity(project));
   }
 } 

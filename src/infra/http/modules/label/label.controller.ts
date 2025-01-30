@@ -1,34 +1,31 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
-import { LabelService } from './label.service';
-import { CreateLabelInput } from '../../shared/inputs/label/create-label.input';
-import { UpdateLabelInput } from '../../shared/inputs/label/update-label.input';
+import { Controller } from '@nestjs/common';
 
 @Controller('labels')
 export class LabelController {
-  constructor(private readonly labelService: LabelService) {}
+  constructor() {}
 
-  @Post()
-  create(@Body() createLabelDto: CreateLabelInput) {
-    return this.labelService.create(createLabelDto);
-  }
+  // @Post()
+  // create(@Body() createLabelDto: CreateLabelInput) {
+  //   return this.labelService.create(createLabelDto);
+  // }
 
-  @Get('task/:taskId')
-  findByTask(@Param('taskId') taskId: string) {
-    return this.labelService.findByTaskId(taskId);
-  }
+  // @Get('task/:taskId')
+  // findByTask(@Param('taskId') taskId: string) {
+  //   return this.labelService.findByTaskId(taskId);
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.labelService.findOne(id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.labelService.findOne(id);
+  // }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateLabelDto: UpdateLabelInput) {
-    return this.labelService.update(id, updateLabelDto);
-  }
+  // @Put(':id')
+  // update(@Param('id') id: string, @Body() updateLabelDto: UpdateLabelInput) {
+  //   return this.labelService.update(id, updateLabelDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.labelService.remove(id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.labelService.remove(id);
+  // }
 } 

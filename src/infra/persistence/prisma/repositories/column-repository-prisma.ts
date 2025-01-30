@@ -1,17 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { IColumnRepository } from '../../../../domain/repositories/column-repository';
+import ColumnRepository from '../../../../domain/repositories/column-repository';
 import { Column } from '../../../../domain/entities/column.entity';
 
 @Injectable()
-export class ColumnRepositoryPrisma implements IColumnRepository {
+export class ColumnRepositoryPrisma implements ColumnRepository {
   constructor(private prisma: PrismaService) {}
 
+  private mapToEntity(data: any): Column {
+    return new Column(
+      data.name,
+      data.maxTasks,
+      data.position,
+      data.code,
+      data.projectId,
+      data.id,
+      data.createdAt,
+      data.updatedAt
+    );
+  }
+
   async findByProjectId(projectId: string): Promise<Column[]> {
-    return this.prisma.column.findMany({ 
+    const columns = await this.prisma.column.findMany({ 
       where: { projectId },
       orderBy: { position: 'asc' }
     });
+    return columns.map(column => this.mapToEntity(column));
   }
 
   async updatePosition(id: string, position: number): Promise<void> {
@@ -21,32 +35,40 @@ export class ColumnRepositoryPrisma implements IColumnRepository {
     });
   }
 
-  async findById(id: string): Promise<Column | null> {
-    return this.prisma.column.findUnique({ where: { id } });
+  async getById(id: string): Promise<Column | null> {
+    const column = await this.prisma.column.findUnique({ where: { id } });
+    return column ? this.mapToEntity(column) : null;
   }
 
-  async create(data: Column): Promise<Column> {
-    const { tasks, project, projectId, ...columnData } = data;
-    return this.prisma.column.create({
+  async save(entity: Column): Promise<Column> {
+    const { tasks, project, ...data } = entity as any;
+    const column = await this.prisma.column.create({
       data: {
-        ...columnData,
-        project: { connect: { id: projectId } }
+        ...data,
+        project: { connect: { id: data.projectId } }
       }
     });
+    return this.mapToEntity(column);
   }
 
-  async update(id: string, data: Partial<Column>): Promise<Column> {
-    const { tasks, project, projectId, ...columnData } = data;
-    return this.prisma.column.update({ 
-      where: { id }, 
+  async update(entity: Column): Promise<Column> {
+    const { tasks, project, ...data } = entity as any;
+    const column = await this.prisma.column.update({ 
+      where: { id: entity.id }, 
       data: {
-        ...columnData,
-        ...(projectId && { project: { connect: { id: projectId } } })
+        ...data,
+        project: { connect: { id: data.projectId } }
       }
     });
+    return this.mapToEntity(column);
   }
 
   async delete(id: string): Promise<void> {
     await this.prisma.column.delete({ where: { id } });
+  }
+
+  async getAll(): Promise<Column[]> {
+    const columns = await this.prisma.column.findMany();
+    return columns.map(column => this.mapToEntity(column));
   }
 } 

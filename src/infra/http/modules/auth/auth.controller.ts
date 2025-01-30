@@ -1,8 +1,11 @@
-import { Controller } from '@nestjs/common';
+import Register from '@/app/usecases/auth/register';
+import { RegisterInput } from '@/shared/inputs/auth/register-input';
+import { Body, Controller, HttpCode, Post, UnprocessableEntityException } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
   constructor(
+    private readonly register: Register
   ) {}
 
   // @Post('login')
@@ -17,15 +20,18 @@ export class AuthController {
   //   return result.value;
   // }
 
-  // @Post('register')
-  // @HttpCode(200)
-  // async register(@Body() body: RegisterInput) {
-  //   const result = await this._register.execute(body);
+  @Post('register')
+  @HttpCode(200)
+  async registerUser(@Body() body: RegisterInput) {
+    const result = await this.register.execute(body);
 
-  //   if (result.isLeft()) {
-  //     throw result.value;
-  //   }
+    if (result.isLeft()) {
+      throw new UnprocessableEntityException({
+        message: result.value.message,
+        fields: result.value.fields,
+      });
+    }
 
-  //   return result.value;
-  // }
+    return 
+  }
 }

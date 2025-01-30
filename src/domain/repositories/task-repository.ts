@@ -1,7 +1,12 @@
-import { Repository } from './base/repository';
+import Repository from '../contracts/repository';
 import { Task } from '../entities/task.entity';
 
-export interface ITaskRepository extends Repository<Task> {
-  findByColumnId(columnId: string): Promise<Task[]>;
-  updatePosition(id: string, position: number): Promise<void>;
+export default abstract class TaskRepository implements Repository<Task> {
+  abstract save(entity: Task): Promise<Task>;
+  abstract update(entity: Task): Promise<Task>;
+  abstract delete(id: string): Promise<void>;
+  abstract getById(id: string): Promise<Task | null>;
+  abstract getAll(): Promise<Task[]>;
+  abstract findByColumnId(columnId: string): Promise<Task[]>;
+  abstract updatePosition(id: string, position: number): Promise<void>;
 } 

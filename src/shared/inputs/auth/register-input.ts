@@ -2,7 +2,10 @@ import { IsNotEmpty } from 'class-validator';
 
 export class RegisterInput {
   @IsNotEmpty()
-  name!: string;
+  firstName!: string;
+
+  @IsNotEmpty()
+  lastName!: string;
 
   @IsNotEmpty()
   email!: string;
