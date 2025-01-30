@@ -6,7 +6,7 @@ export const userSchema = z.object({
   lastName: z.string(),
   email: z.string().email(),
   password: z.string(),
-  photo: z.string().nullable(),
+  photo: z.string().nullable().optional(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
