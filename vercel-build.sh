@@ -13,6 +13,4 @@ yarn prisma migrate deploy
 echo "Construindo aplicação NestJS..."
 yarn build
 
-yarn start:prod
-
 echo "Build concluído com sucesso!"
