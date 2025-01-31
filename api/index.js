@@ -1,7 +1,7 @@
 const path = require('path');
+const app = require('../dist/main').default;
 
-// Importa o arquivo compilado main.js
-const server = require(path.join(process.cwd(), 'dist/main'));
-
-// Exporta o handler para a Vercel
-module.exports = server; 
+module.exports = async (req, res) => {
+  const server = await app;
+  server(req, res);
+}; 
