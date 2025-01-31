@@ -14,7 +14,6 @@ export class ColumnRepositoryPrisma extends ColumnRepository {
       data.name,
       data.maxTasks,
       data.position,
-      data.code,
       data.projectId,
       data.id,
       data.createdAt,
@@ -29,7 +28,6 @@ export class ColumnRepositoryPrisma extends ColumnRepository {
         name: entity.name,
         maxTasks: entity.maxTasks,
         position: entity.position,
-        code: entity.code,
         projectId: entity.projectId,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt
@@ -52,7 +50,6 @@ export class ColumnRepositoryPrisma extends ColumnRepository {
         name: entity.name,
         maxTasks: entity.maxTasks,
         position: entity.position,
-        code: entity.code,
         projectId: entity.projectId,
         updatedAt: new Date()
       }

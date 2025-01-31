@@ -51,7 +51,6 @@ model Column {
   name      String   @db.VarChar(255)
   maxTasks  Int      @default(0)
   position  Int      @default(0)
-  code      Int
   project   Project  @relation(fields: [projectId], references: [id])
   projectId String   @db.Uuid
   tasks     Task[]
