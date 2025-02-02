@@ -40,7 +40,7 @@ export class AuthController {
       sameSite: 'lax',
       domain: this.configService.get('COOKIE_DOMAIN'),
       path: '/',
-      maxAge: 24 * 60 * 60 * 1000 // 1 day
+      maxAge: 24 * 60 * 60 * 1000
     });
 
     const { access_token, ...userData } = result.value;

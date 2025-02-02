@@ -33,7 +33,7 @@ export default class Register implements UseCase<I, O>{
 
         await this.prisma.project.create({
             data: {
-                name: 'MyProject',
+                name: 'My project',
                 userId: savedUser.id,
                 columns: {
                     create: [
