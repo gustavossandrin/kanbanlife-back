@@ -28,13 +28,24 @@ export class ProjectRepositoryPrisma implements ProjectRepository {
   }
 
   async save(entity: Project): Promise<Project> {
-    const { columns, user, ...data } = entity as any;
+    const { columns, user, userId, ...data } = entity as any;
     const project = await this.prisma.project.create({
       data: {
         ...data,
-        user: { connect: { id: data.userId } }
+        user: {
+          connect: {
+            id: userId
+          }
+        },
+        columns: columns && {
+          create: columns.map(({ id, createdAt, updatedAt, code, projectId, ...column }) => column)
+        }
+      },
+      include: {
+        columns: true
       }
     });
+
     return this.mapToEntity(project);
   }
 

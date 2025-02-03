@@ -1,16 +1,35 @@
-import { Controller, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req, Post, Body } from '@nestjs/common';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
-import { ProjectService } from '@/app/services/project.service';
 import { RequestWithUser } from '../../types/express';
+import { CreateProjectDto } from './dtos/create-project.dto';
+import { CreateProjectUseCase } from '@/app/usecases/project/create-project';
+import { FindProjectsByUserUseCase } from '@/app/usecases/project/find-projects-by-user';
 
 @Controller('projects')
 export class ProjectController {
-  constructor(private readonly projectService: ProjectService) {}
+  constructor(
+    private readonly createProjectUseCase: CreateProjectUseCase,
+    private readonly findProjectsByUserUseCase: FindProjectsByUserUseCase
+  ) {}
 
   @Get('')
   @UseGuards(JwtAuthGuard)
   findByUser(@Req() request: RequestWithUser) {
-    return this.projectService.findByUserId(request.user.userId);
+    return this.findProjectsByUserUseCase.execute({
+      userId: request.user.userId
+    });
+  }
+
+  @Post('new')
+  @UseGuards(JwtAuthGuard)
+  async createProject(
+    @Body() createProjectDto: CreateProjectDto,
+    @Req() request: RequestWithUser,
+  ) {
+    return this.createProjectUseCase.execute({
+      ...createProjectDto,
+      userId: request.user.userId
+    });
   }
 
   // @Post()
