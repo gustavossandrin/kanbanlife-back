@@ -10,10 +10,11 @@ export type TaskSchema = z.infer<typeof taskSchema>;
 export class Task extends Entity implements TaskSchema {
   constructor(
     public title: string,
-    public position: number,
     public color: TaskColor,
     public columnId: string,
     public description?: string,
+    public labels?: string[],
+    public position: number = 0,
     public id: string = randomUUID(),
     public createdAt: Date = new Date(),
     public updatedAt: Date = new Date(),

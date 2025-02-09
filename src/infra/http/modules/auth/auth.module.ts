@@ -5,10 +5,10 @@ import { PrismaService } from '../../../persistence/prisma/prisma.service';
 import { ColumnRepositoryPrisma } from '../../../persistence/prisma/repositories/column-repository-prisma';
 import { AuthController } from './auth.controller';
 import UserRepository from '@/domain/repositories/user-repository';
-import { UserRepositoryPrisma } from '@/infra/persistence/repositories/user-repository-prisma';
 import Register from '@/app/usecases/auth/register';
 import { Login } from '@/app/usecases/auth/login';
 import { JwtStrategy } from '../../strategies/jwt.strategy';
+import { UserRepositoryPrisma } from '@/infra/persistence/prisma/repositories/user-repository-prisma';
 
 @Module({
   imports: [

@@ -11,10 +11,11 @@ export class TaskRepositoryPrisma implements TaskRepository {
   private mapToEntity(data: any): Task {
     return new Task(
       data.title,
-      data.position,
       data.color as TaskColor,
       data.columnId,
       data.description,
+      data.labels,
+      data.position,
       data.id,
       data.createdAt,
       data.updatedAt
@@ -44,6 +45,7 @@ export class TaskRepositoryPrisma implements TaskRepository {
         color: data.color,
         columnId: data.columnId,
         description: data.description,
+        labels: data.labels,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt
       }
@@ -61,6 +63,7 @@ export class TaskRepositoryPrisma implements TaskRepository {
         color: data.color,
         columnId: data.columnId,
         description: data.description,
+        labels: data.labels,
         updatedAt: new Date()
       }
     });

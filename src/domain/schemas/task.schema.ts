@@ -6,5 +6,6 @@ export const taskSchema = z.object({
   description: z.string().max(500).optional(),
   position: z.number().min(0),
   color: z.nativeEnum(TaskColor),
-  columnId: z.string().uuid()
+  columnId: z.string().uuid(),
+  labels: z.array(z.string()).optional()
 }); 

@@ -62,19 +62,12 @@ model Task {
   id          String    @id @default(uuid()) @db.Uuid
   title       String    @db.VarChar(100)
   description String?   @db.VarChar(500)
-  position    Int       @default(0)
+  position    Float     @default(0)
   color       TaskColor
   column      Column    @relation(fields: [columnId], references: [id])
   columnId    String    @db.Uuid
-  labels      Label[]
+  labels      String[]
   createdAt   DateTime  @default(now()) @db.Timestamptz
   updatedAt   DateTime  @updatedAt @db.Timestamptz
 }
 
-model Label {
-  id        String   @id @default(uuid()) @db.Uuid
-  title     String   @db.VarChar(255)
-  tasks     Task[]
-  createdAt DateTime @default(now()) @db.Timestamptz
-  updatedAt DateTime @updatedAt @db.Timestamptz
-}

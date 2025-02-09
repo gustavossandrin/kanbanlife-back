@@ -1,17 +1,25 @@
 import { Module } from '@nestjs/common';
 import { TaskController } from './task.controller';
-import { PrismaService } from '../../../persistence/prisma/prisma.service';
-import { TaskRepositoryPrisma } from '../../../persistence/prisma/repositories/task-repository-prisma';
+import { CreateTaskUseCase } from '@/app/usecases/task/create-task';
+import { UpdateTaskUseCase } from '@/app/usecases/task/update-task';
+import { UpdateTaskPositionUseCase } from '@/app/usecases/task/update-task-position';
+import { DeleteTaskUseCase } from '@/app/usecases/task/delete-task';
+import { PrismaModule } from '@/infra/persistence/prisma/prisma.module';
+import TaskRepository from '@/domain/repositories/task-repository';
+import { TaskRepositoryPrisma } from '@/infra/persistence/prisma/repositories/task-repository-prisma';
 
 @Module({
+  imports: [PrismaModule],
   controllers: [TaskController],
   providers: [
-    PrismaService,
+    CreateTaskUseCase,
+    UpdateTaskUseCase,
+    UpdateTaskPositionUseCase,
+    DeleteTaskUseCase,
     {
-      provide: 'ITaskRepository',
+      provide: TaskRepository,
       useClass: TaskRepositoryPrisma,
     },
   ],
-  exports: [],
 })
 export class TaskModule {} 
