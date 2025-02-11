@@ -28,24 +28,25 @@ export class ProjectRepositoryPrisma implements ProjectRepository {
           project.id,
           column.id,
           column.createdAt,
-          column.updatedAt
+          column.updatedAt,
         );
 
         if (column.tasks) {
           mappedColumn.tasks = column.tasks
             .sort((a: any, b: any) => b.position - a.position)
-            .map((task: any) => 
-              new Task(
-                task.title,
-                task.color,
-                task.columnId,
-                task.description,
-                task.labels,
-                task.position,
-                task.id,
-                task.createdAt,
-                task.updatedAt
-              )
+            .map(
+              (task: any) =>
+                new Task(
+                  task.title,
+                  task.color,
+                  task.columnId,
+                  task.description,
+                  task.labels,
+                  task.position,
+                  task.id,
+                  task.createdAt,
+                  task.updatedAt,
+                ),
             );
         }
 
@@ -58,23 +59,23 @@ export class ProjectRepositoryPrisma implements ProjectRepository {
 
   async findByUserId(userId: string): Promise<Project[]> {
     const projects = await this.prisma.project.findMany({ where: { userId } });
-    return projects.map(project => this.mapToEntity(project));
+    return projects.map((project) => this.mapToEntity(project));
   }
 
   async getById(id: string, userId: string): Promise<Project | null> {
-    const project = await this.prisma.project.findUnique({ 
+    const project = await this.prisma.project.findUnique({
       where: { id, userId },
       include: {
         columns: {
           include: {
             tasks: {
               orderBy: {
-                position: 'desc'
-              }
-            }
-          }
-        }
-      }
+                position: 'desc',
+              },
+            },
+          },
+        },
+      },
     });
     return project ? this.mapToEntity(project) : null;
   }
@@ -86,16 +87,19 @@ export class ProjectRepositoryPrisma implements ProjectRepository {
         ...data,
         user: {
           connect: {
-            id: userId
-          }
+            id: userId,
+          },
         },
         columns: columns && {
-          create: columns.map(({ id, createdAt, updatedAt, code, projectId, ...column }) => column)
-        }
+          create: columns.map(
+            ({ id, createdAt, updatedAt, code, projectId, ...column }) =>
+              column,
+          ),
+        },
       },
       include: {
-        columns: true
-      }
+        columns: true,
+      },
     });
 
     return this.mapToEntity(project);
@@ -107,18 +111,18 @@ export class ProjectRepositoryPrisma implements ProjectRepository {
       where: { id: entity.id },
       data: {
         ...data,
-        user: { connect: { id: data.userId } }
-      }
+        user: { connect: { id: data.userId } },
+      },
     });
     return this.mapToEntity(project);
   }
 
-  async delete(id: string): Promise<void> {
-    await this.prisma.project.delete({ where: { id } });
+  async delete(id: string, userId: string): Promise<void> {
+    await this.prisma.project.delete({ where: { id, userId } });
   }
 
   async getAll(): Promise<Project[]> {
     const projects = await this.prisma.project.findMany();
-    return projects.map(project => this.mapToEntity(project));
+    return projects.map((project) => this.mapToEntity(project));
   }
-} 
+}

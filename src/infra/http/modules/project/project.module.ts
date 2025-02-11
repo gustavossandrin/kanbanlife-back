@@ -5,6 +5,7 @@ import { ProjectRepositoryPrisma } from '@/infra/persistence/prisma/repositories
 import { CreateProjectUseCase } from '@/app/usecases/project/create-project';
 import { FindProjectsByUserUseCase } from '@/app/usecases/project/find-projects-by-user';
 import { FindProjectByIdUseCase } from '@/app/usecases/project/find-by-id';
+import { DeleteProjectUseCase } from "@/app/usecases/project/delete-project";
 
 @Module({
   controllers: [ProjectController],
@@ -13,6 +14,7 @@ import { FindProjectByIdUseCase } from '@/app/usecases/project/find-by-id';
     CreateProjectUseCase,
     FindProjectsByUserUseCase,
     FindProjectByIdUseCase,
+    DeleteProjectUseCase,
     {
       provide: 'IProjectRepository',
       useClass: ProjectRepositoryPrisma,
