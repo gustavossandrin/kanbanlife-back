@@ -38,7 +38,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      domain: this.configService.get('COOKIE_DOMAIN'),
+      //domain: this.configService.get('COOKIE_DOMAIN'),
       path: '/',
       maxAge: 24 * 60 * 60 * 1000
     });
@@ -55,7 +55,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      domain: this.configService.get('COOKIE_DOMAIN')
+      //domain: this.configService.get('COOKIE_DOMAIN')
     });
     return response.json({ message: 'Logged out successfully' });
   }
