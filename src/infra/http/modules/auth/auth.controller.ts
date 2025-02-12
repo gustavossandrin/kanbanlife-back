@@ -37,7 +37,7 @@ export class AuthController {
     response.cookie('token', result.value.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'none',
       //domain: this.configService.get('COOKIE_DOMAIN'),
       path: '/',
       maxAge: 24 * 60 * 60 * 1000
