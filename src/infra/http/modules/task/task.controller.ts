@@ -5,7 +5,18 @@ import { DeleteTaskUseCase } from '@/app/usecases/task/delete-task';
 import { CreateTaskInput } from '@/shared/inputs/task/create-task-input';
 import { UpdateTaskInput } from '@/shared/inputs/task/update-task-input';
 import { UpdateTaskPositionInput } from '@/shared/inputs/task/update-task-position-input';
-import { Body, Controller, Post, Put, Delete, Param, UnprocessableEntityException, NotFoundException, UseGuards} from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Put,
+  Delete,
+  Param,
+  UnprocessableEntityException,
+  NotFoundException,
+  UseGuards,
+  Patch
+} from "@nestjs/common";
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 
 @Controller('tasks')
@@ -29,7 +40,7 @@ export class TaskController {
     return result.value;
   }
 
-  @Put(':id')
+  @Patch(':id')
   @UseGuards(JwtAuthGuard)
   async update(@Param('id') id: string, @Body() updateTaskInput: UpdateTaskInput) {
     const result = await this.updateTaskUseCase.execute(id, updateTaskInput);
@@ -68,29 +79,4 @@ export class TaskController {
       throw new NotFoundException(result.value);
     }
   }
-
-//   @Get('column/:columnId')
-//   findByColumn(@Param('columnId') columnId: string) {
-//     return this.taskService.findByColumnId(columnId);
-//   }
-
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.taskService.findOne(id);
-//   }
-
-//   @Put(':id')
-//   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskInput) {
-//     return this.taskService.update(id, updateTaskDto);
-//   }
-
-//   @Put(':id/position')
-//   updatePosition(@Param('id') id: string, @Body('position') position: number) {
-//     return this.taskService.updatePosition(id, position);
-//   }
-
-//   @Delete(':id')
-//   remove(@Param('id') id: string) {
-//     return this.taskService.remove(id);
-//   }
 } 

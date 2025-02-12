@@ -59,9 +59,7 @@ export class TaskRepositoryPrisma implements TaskRepository {
       where: { id: entity.id },
       data: {
         title: data.title,
-        position: data.position,
         color: data.color,
-        columnId: data.columnId,
         description: data.description,
         labels: data.labels,
         updatedAt: new Date()
