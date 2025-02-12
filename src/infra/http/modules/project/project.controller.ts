@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Req, Post, Body, Param, NotFoundException, Delete } from "@nestjs/common";
+import { Controller, Get, UseGuards, Req, Post, Body, Param, NotFoundException, Delete, Put } from "@nestjs/common";
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RequestWithUser } from '../../types/express';
 import { CreateProjectDto } from './dtos/create-project.dto';
@@ -6,6 +6,8 @@ import { CreateProjectUseCase } from '@/app/usecases/project/create-project';
 import { FindProjectsByUserUseCase } from '@/app/usecases/project/find-projects-by-user';
 import { FindProjectByIdUseCase } from '@/app/usecases/project/find-by-id';
 import { DeleteProjectUseCase } from "@/app/usecases/project/delete-project";
+import { UpdateProjectInput } from "@/shared/inputs/project/update-project-input";
+import { UpdateProjectUseCase } from "@/app/usecases/project/update-project";
 
 @Controller('projects')
 export class ProjectController {
@@ -14,6 +16,7 @@ export class ProjectController {
     private readonly findProjectsByUserUseCase: FindProjectsByUserUseCase,
     private readonly findProjectByIdUseCase: FindProjectByIdUseCase,
     private readonly deleteProjectUseCase: DeleteProjectUseCase,
+    private readonly updateProjectUseCase: UpdateProjectUseCase,
   ) {}
 
   @Get('')
@@ -66,13 +69,14 @@ export class ProjectController {
     return;
   }
 
-  // @Put(':id')
-  // update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectInput) {
-  //   return this.projectService.update(id, updateProjectDto);
-  // }
+  @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  update(
+    @Param('id') id: string,
+    @Body() updateProjectInput: UpdateProjectInput,
+    @Req() request: RequestWithUser
+  ) {
+    return this.updateProjectUseCase.execute(id, request.user.userId, updateProjectInput);
+  }
 
-  // @Post()
-  // create(@Body() createProjectDto: CreateProjectInput) {
-  //   return this.projectService.create(createProjectDto);
-  // }
 }

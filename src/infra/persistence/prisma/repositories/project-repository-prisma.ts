@@ -92,7 +92,7 @@ export class ProjectRepositoryPrisma implements ProjectRepository {
         },
         columns: columns && {
           create: columns.map(
-            ({ id, createdAt, updatedAt, code, projectId, ...column }) =>
+            ({ id, createdAt, updatedAt, projectId, ...column }) =>
               column,
           ),
         },
@@ -110,8 +110,25 @@ export class ProjectRepositoryPrisma implements ProjectRepository {
     const project = await this.prisma.project.update({
       where: { id: entity.id },
       data: {
-        ...data,
+        name: entity.name,
+        updatedAt: entity.updatedAt,
         user: { connect: { id: data.userId } },
+        columns: {
+          deleteMany: {
+            id: {notIn: columns.map(col => col.id)},
+            projectId: entity.id,
+          },
+          upsert: columns.map(col => ({
+            where: {id: col.id},
+            create: {
+              name: col.name, maxTasks: col.maxTasks, position: col.position, createdAt: col.createdAt,
+              updatedAt: col.updatedAt,
+            },
+            update: {
+              name: col.name, maxTasks: col.maxTasks, position: col.position, createdAt: col.createdAt,
+            }
+          }))
+        }
       },
     });
     return this.mapToEntity(project);
