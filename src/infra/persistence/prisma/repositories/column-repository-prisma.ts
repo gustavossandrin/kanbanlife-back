@@ -12,7 +12,6 @@ export class ColumnRepositoryPrisma implements ColumnRepository {
       data.name,
       data.maxTasks,
       data.position,
-      data.code,
       data.projectId,
       data.id,
       data.createdAt,

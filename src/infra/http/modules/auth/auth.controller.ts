@@ -36,7 +36,7 @@ export class AuthController {
 
     response.cookie('token', result.value.access_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'none',
       //domain: this.configService.get('COOKIE_DOMAIN'),
       path: '/',

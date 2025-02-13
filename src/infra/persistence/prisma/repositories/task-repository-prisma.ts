@@ -62,6 +62,8 @@ export class TaskRepositoryPrisma implements TaskRepository {
         color: data.color,
         description: data.description,
         labels: data.labels,
+        columnId: data.columnId,
+        position: data.position,
         updatedAt: new Date()
       }
     });

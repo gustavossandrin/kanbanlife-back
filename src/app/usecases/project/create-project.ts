@@ -33,7 +33,6 @@ export class CreateProjectUseCase {
         column.name,
         column.maxTasks ?? 0,
         column.position,
-        index + 1,
         project.id
       );
 

@@ -27,7 +27,7 @@ export class ProjectController {
     });
   }
 
-  @Post('new')
+  @Post()
   @UseGuards(JwtAuthGuard)
   async createProject(
     @Body() createProjectDto: CreateProjectDto,

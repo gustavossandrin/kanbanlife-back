@@ -13,7 +13,6 @@ export class Column extends Entity implements ColumnSchema {
     public name: string,
     public maxTasks: number,
     public position: number,
-    public code: number,
     public projectId: string,
     public id: string = randomUUID(),
     public createdAt: Date = new Date(),

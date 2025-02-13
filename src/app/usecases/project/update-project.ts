@@ -31,7 +31,6 @@ export class UpdateProjectUseCase{
         column.name,
         column.maxTasks ?? 0,
         column.position,
-        index + 1,
         id,
         column.id ?? randomUUID(),
       );

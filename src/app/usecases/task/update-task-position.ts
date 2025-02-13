@@ -22,9 +22,13 @@ export class UpdateTaskPositionUseCase {
     let newPosition: number;
 
     if (input.topPosition === null) {
-      newPosition = input.bottomPosition ? input.bottomPosition - 1 : 0;
+      if (input.bottomPosition === null) {
+        newPosition = 0;
+      } else {
+        newPosition = input.bottomPosition + 1;
+      }
     } else if (input.bottomPosition === null) {
-      newPosition = input.topPosition + 1;
+      newPosition = input.topPosition - 1;
     } else {
       newPosition = (input.topPosition + input.bottomPosition) / 2;
     }

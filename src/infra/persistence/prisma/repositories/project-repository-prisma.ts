@@ -24,7 +24,6 @@ export class ProjectRepositoryPrisma implements ProjectRepository {
           column.name,
           column.maxTasks,
           column.position,
-          column.code,
           project.id,
           column.id,
           column.createdAt,
@@ -107,6 +106,7 @@ export class ProjectRepositoryPrisma implements ProjectRepository {
 
   async update(entity: Project): Promise<Project> {
     const { columns, user, ...data } = entity as any;
+    console.log('columns', columns)
     const project = await this.prisma.project.update({
       where: { id: entity.id },
       data: {
@@ -115,7 +115,7 @@ export class ProjectRepositoryPrisma implements ProjectRepository {
         user: { connect: { id: data.userId } },
         columns: {
           deleteMany: {
-            id: {notIn: columns.map(col => col.id)},
+            id: {notIn: columns.map(col => col.id)}, 
             projectId: entity.id,
           },
           upsert: columns.map(col => ({
